@@ -1,7 +1,11 @@
 #Used Libraries:
+import re
+
 import pandas as pd
 import praw
 import requests
+import urllib.request
+import snscrape.modules.twitter as sntwitter
 from bs4 import BeautifulSoup as bs
 
 
@@ -45,11 +49,27 @@ class ScrapeReddit:
 
         return df_comb
 
-
+"""""
 r1_input = ScrapeReddit("Scraper 1.0 by u/ExoticTrack-200", 'hzOgEEsCkTaBb1gHTVkpsw', 'grDAf4hLL7slDn2-9cN32F6JcdxOuA')
 r1 = r1_input.FindTopics()
 
 print(r1)
+
+"""
+
+#ScrappingCryptoSlam:
+l = set()
+
+#page & url
+page = urllib.request.urlopen("https://www.cryptoslam.io/nfts")
+soup = bs(page, "html.parser")
+
+#getting elements
+element = soup.find('a', class_= "MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1ci8y0t")
+#function_names = re.findall('0x\w+', str(names))
+
+print(element)
+
 
 #Kaggle Datasets
 #basic:
