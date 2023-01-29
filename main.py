@@ -15,33 +15,41 @@ class ScrapeReddit:
         self.client_id = client_id
         self.client_secret = client_secret
 
-    def Access(self):
+
         self.redit = praw.Reddit(
             client_id = self.client_id,
             client_secret = self.client_secret,
-            user_agent = self.user_agent
+            user_agent = self.user_agent)
 
-        )
 
     def FindTopics(self):
-        self.headlines = set()
-        for submission in self.redit.subreddit("NFT").hot(limit=None):
-            print(submission.title)         #prints are for testing the function
-            print(submission.id)
-            print(submission.author)
-            print(submission.created_utc)
-            print(submission.score)
-            print(submission.upvote_ratio)
-            print(submission.url)
-            break                           #to stop an overload
-            headlines.add(submission.titel) #for summary of interesting headlines about NFTs
+        headlines = set()
+        ids = set()
+        creator = set()
+        for submission in self.redit.subreddit("NFT").top(limit=None):
 
-    def result2DF(self):
-        df = pd.DataFrame(self.headlines)
-        df.head()
+            headlines.add(submission.title)
+            ids.add(submission.id)
+            creator.add(submission.author)
+            #.add(submission.created_utc)
+            #.add(submission.score)
+            #.add(submission.upvote_ratio)
+            #.add(submission.url)
 
 
+        df_headlines = pd.DataFrame(list(headlines) , columns=['Headlines:'])
+        df_ids = pd.DataFrame(list(ids), columns=['IDs:'])
+        df_author = pd.DataFrame(list(creator), columns=['Creator:'])
 
+        df_comb = pd.concat([df_headlines, df_ids, df_author], axis=0)
+
+        return df_comb
+
+
+r1_input = ScrapeReddit("Scraper 1.0 by u/ExoticTrack-200", 'hzOgEEsCkTaBb1gHTVkpsw', 'grDAf4hLL7slDn2-9cN32F6JcdxOuA')
+r1 = r1_input.FindTopics()
+
+print(r1)
 
 #Kaggle Datasets
 #basic:
