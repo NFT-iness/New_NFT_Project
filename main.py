@@ -3,6 +3,7 @@ import re
 
 import pandas as pd
 import praw
+import json
 import requests
 import urllib
 from urllib.request import Request, urlopen
@@ -61,73 +62,26 @@ print(r1)
 
 #ScrappingCryptoSlam from Ehterscan :
 
-BASE_url = "https://api.etherscan.io/api"
-API_Key = "K3XB7RJNEGRD8GGK42UDBCQQN4HUMB483H"
+class nft_transaction_data:
+    def __int__(self, ContractAddress: str):
+        self.url = 'https://api.etherscan.io/api'
+        self.params = {
+            'module': 'logs',
+            'action': 'getLogs',
+            'address': ContractAddress,
+            'apikey': "K3XB7RJNEGRD8GGK42UDBCQQN4HUMB483H"
+            }
+
+        r = requests.get(self.url, params=self.params)
+        json_data = json.loads(r.text)["result"]
+        df = pd.json_normalize(json_data)
+        df[["topics", "data", "timeStamp", "transactionHash", ]].head()
+
+        return df
 
 
-#Function that produces an url for sending a GET request to:
-def make_api_url(module, action, adress, **kwargs):
-    url = BASE_url + f"?module={module}&action={action}&adress={adress}&apikey={API_Key}"
-
-    for key, value in kwargs.items():
-        url += f"&{key}={value}"
-
-    return url
-
-#Function to get 'normal' transactions:
-def get_transaction(adress):
-    get_transactions_url = make_api_url("account",
-                                        "txlist",
-                                        adress,
-                                        startblock= 0,
-                                        endblock = 99999999,
-                                        page=1,
-                                        offset = 10000,
-                                        sort="desc")
-
-    response = get(get_transactions_url)
-    data = response.json()["result"]
-
-    for tx in data:
-        to = tx['to']
-        from_addr = tx['from']
-        value = tx['value']
-        gas = tx['gasUsed']
-        time = tx['timestamp']
-
-        print("---------------------------------------------------")
-        print("To:", to)
-        print("From:", from_addr)
-        print("Value:", value)
-        print("Gas used:", gas)
-        print("TransactionDate:", time)
-
-    print(data)
-
-adress = "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC"
-get_transaction(adress)
-
-"""""
-url = "https://etherscan.io/txs"
-request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-webpage = urlopen(request_site).read()
-soup = bs(webpage, "html.parser")
-result = soup.find('tr')
-
-print(result)
-print(soup)
-
-
-#page & url
-page = urllib.request.urlopen("https://etherscan.io/address/0x14ae8100Ea85a11bbb36578f83AB1b5C1cFDd61c")
-soup = bs(page.content, "html.parser")
-
-#getting elements
-element = soup.find('a', class_= "MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1ci8y0t")
-#function_names = re.findall('0x\w+', str(names))
-
-print(element)
-"""""
+t1 = nft_transaction_data().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
+print(t1.head())
 
 #Kaggle Datasets
 #basic:
@@ -145,8 +99,6 @@ class Analyse_Dataset:
 
     def show_data(self):
         print(self.data.head())
-
-
 
 
 
