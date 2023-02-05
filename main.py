@@ -1,6 +1,6 @@
 #Used Libraries:
 import re
-
+import numpy as np
 import pandas as pd
 import praw
 import json
@@ -62,7 +62,8 @@ print(r1)
 
 #ScrappingCryptoSlam from Ehterscan :
 
-class nft_transaction_data:
+#Class to get Log data of a specific NFT, needs the NFT Contract Address to work!
+class nft_log_data:
     def __int__(self, ContractAddress: str):
         self.url = 'https://api.etherscan.io/api'
         self.params = {
@@ -75,13 +76,41 @@ class nft_transaction_data:
         r = requests.get(self.url, params=self.params)
         json_data = json.loads(r.text)["result"]
         df = pd.json_normalize(json_data)
-        df[["topics", "data", "timeStamp", "transactionHash", ]].head()
+        #df[["topics", "data", "timeStamp", "transactionHash", ]].head()
 
         return df
 
+#class to get nft transaction data
+#transaction details 'From' & 'To'
+class nft_transaction_data:
+    def __int__(self, ContractAddress: str):
+        self.url = 'https://api.etherscan.io/api'
+        self.params = {
+            'module': 'account',
+            'action': 'txlist',
+            'address': ContractAddress,
+            'apikey': "K3XB7RJNEGRD8GGK42UDBCQQN4HUMB483H"
+            }
+
+        r = requests.get(self.url, params=self.params)
+        json_data = json.loads(r.text)["result"]
+        df = pd.json_normalize(json_data)
+        #df[["topics", "data", "timeStamp", "transactionHash", ]].head()
+
+        return df
+
+###Ouptut Modification For Pycharm###
+desired_width=320
+pd.set_option('display.width', desired_width)
+pd.set_option('display.max_columns',20)
+######################################
 
 t1 = nft_transaction_data().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
 print(t1.head())
+
+
+
+
 
 #Kaggle Datasets
 #basic:
