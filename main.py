@@ -5,6 +5,7 @@ import pandas as pd
 import praw
 import json
 import requests
+import matplotlib.pyplot as plt
 import urllib
 from urllib.request import Request, urlopen
 import snscrape.modules.twitter as sntwitter
@@ -12,8 +13,15 @@ from bs4 import BeautifulSoup as bs
 from requests import get
 
 
+###Ouptut Modification For Pycharm###
+desired_width=320
+pd.set_option('display.width', desired_width)
+pd.set_option('display.max_columns',20)
+######################################
 
-####Web Scrapping - Part
+
+
+###################### Scrapping - Social Media #################################################################
 
 #Class for RedditScrapping
 class ScrapeReddit:
@@ -60,7 +68,7 @@ print(r1)
 
 """
 
-#ScrappingCryptoSlam from Ehterscan :
+############################## Scrapping Etherium Blockchain from Ehterscan#############################################
 
 #Class to get Log data of a specific NFT, needs the NFT Contract Address to work!
 class nft_log_data:
@@ -110,8 +118,8 @@ class TokenTransferEvents:
             'module': 'account',
             'action': 'tokennfttx',
             'address': ContractAddress,
-            'page': 1,
-            'offset': 100,
+            #'page': 1,
+            #'offset': 100,
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -128,12 +136,6 @@ class TokenTransferEvents:
 
 
 
-###Ouptut Modification For Pycharm###
-desired_width=320
-pd.set_option('display.width', desired_width)
-pd.set_option('display.max_columns',20)
-######################################
-
 #n1 = nft_log_data().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
 #print(n1.head())
 
@@ -141,27 +143,66 @@ pd.set_option('display.max_columns',20)
 #print(t1.tail())
 
 TTE = TokenTransferEvents().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
-print(TTE.head())
+#print(TTE.head())
+
+def DataSelection(DataFrame, column):
+    df = DataFrame.drop_duplicates(subset=[column])
+    return df
+
+
+pd.set_option('display.max_rows', None)
+
+print(TTE)
+#print(DataSelection(TTE, "transactionIndex"))
+
+
+
+#print(TTE['from'].value_counts())
+#print(TTE['to'].value_counts())
+
+#print(TTE[TTE['tokenID'] == '2'])
 
 
 
 
-#Kaggle Datasets
-#basic:
-b_data = pd.read_csv('https://raw.githubusercontent.com/hemil26/NFT-Dataset/master/nft_sales.csv')
-#twitter:
 
 
-
-
-
-#Class to read in Datasets, make Analysis and return results
+#Class to read in a final Dataset to make Analysis and return results
 class Analyse_Dataset:
     def __init__(self, data):
         self.data = data
 
     def show_data(self):
         print(self.data.head())
+
+
+
+####### Data Visualization ####################################################################
+
+import networkx as nx
+import scipy as sp
+
+G = nx.from_pandas_edgelist(TTE, source='from', target='to', edge_attr='gasUsed')
+
+width = np.array([w for *_, w in G.edges.data('gasUsed')])
+
+pos = nx.spring_layout(G)
+
+#nodes
+nx.draw_networkx_nodes(G, pos, node_size=700)
+
+# edges
+nx.draw_networkx_edges(G, pos, width=width*10)  # using a 10x scale factor here
+
+# labels
+nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")
+
+ax = plt.gca()
+ax.margins(0.08)
+plt.axis("off")
+plt.tight_layout()
+
+
 
 
 
