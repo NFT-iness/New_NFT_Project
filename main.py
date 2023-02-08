@@ -152,10 +152,11 @@ def DataSelection(DataFrame, column):
 
 pd.set_option('display.max_rows', None)
 
-print(TTE)
-#print(DataSelection(TTE, "transactionIndex"))
+print(TTE.head())
 
+TTE_Drop = DataSelection(TTE, "transactionIndex")
 
+print(TTE_Drop)
 
 #print(TTE['from'].value_counts())
 #print(TTE['to'].value_counts())
@@ -182,9 +183,15 @@ class Analyse_Dataset:
 import networkx as nx
 import scipy as sp
 
-G = nx.from_pandas_edgelist(TTE, source='from', target='to', edge_attr='gasUsed')
+G = nx.from_pandas_edgelist(TTE_Drop, source='from', target='to')
 
-width = np.array([w for *_, w in G.edges.data('gasUsed')])
+nx.draw_spring(G)
+plt.show()
+
+"""
+G = nx.from_pandas_edgelist(TTE.head(), source='from', target='to', edge_attr='gas')
+
+width = np.array([w for *_, w in G.edges.data('gas')])
 
 pos = nx.spring_layout(G)
 
@@ -205,7 +212,7 @@ plt.tight_layout()
 
 
 
-
+"""
 
 
 
