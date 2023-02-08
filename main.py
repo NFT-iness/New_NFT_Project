@@ -120,9 +120,9 @@ class TokenTransferEvents:
             'address': ContractAddress,
             #'page': 1,
             #'offset': 100,
-            'startblock': 0,
-            'endblock': 27025780,
-            'sort': 'asc',
+            #'startblock': 0,
+            #'endblock': 27025780,
+            #'sort': 'asc',
             'apikey': "K3XB7RJNEGRD8GGK42UDBCQQN4HUMB483H"
             }
 
@@ -135,15 +135,35 @@ class TokenTransferEvents:
         return df
 
 
+#Dictionary for the ContractAdresses of the NFT Collections we are getting the Data from
+Contract_Adresses = {
+    "Bored Ape Yacht Club": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+    "CryptoPunks": "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
+    "Mutant Ape Yacht Club": "0x60e4d786628fea6478f785a6d7e704777c86a7c6",
+    "Otherdeed for Otherside": "0x34d85c9cdeb23fa97cb08333b511ac86e1c4e258"
+}
 
-#n1 = nft_log_data().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
-#print(n1.head())
 
-#t1 = nft_transaction_data().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
-#print(t1.tail())
 
-TTE = TokenTransferEvents().__int__("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d")
-#print(TTE.head())
+def getDF(Contract_Adresses: dict):
+
+    adresses = Contract_Adresses.values()
+    dfs = []
+
+    for i in adresses:
+        run = TokenTransferEvents().__int__(i)
+        df_A = pd.DataFrame(run)
+        dfs.append(df_A)
+
+    df = pd.concat(dfs)
+    return df
+
+
+df = getDF(Contract_Adresses)
+
+#df = TokenTransferEvents().__int__("0x34d85c9cdeb23fa97cb08333b511ac86e1c4e258")
+print(df.info())
+
 
 def DataSelection(DataFrame, column):
     df = DataFrame.drop_duplicates(subset=[column])
@@ -152,11 +172,9 @@ def DataSelection(DataFrame, column):
 
 pd.set_option('display.max_rows', None)
 
-print(TTE.head())
+df_Drop = DataSelection(df, "transactionIndex")
 
-TTE_Drop = DataSelection(TTE, "transactionIndex")
-
-print(TTE_Drop)
+print(df_Drop)
 
 #print(TTE['from'].value_counts())
 #print(TTE['to'].value_counts())
@@ -183,36 +201,11 @@ class Analyse_Dataset:
 import networkx as nx
 import scipy as sp
 
-G = nx.from_pandas_edgelist(TTE_Drop, source='from', target='to')
+G = nx.from_pandas_edgelist(df, source='from', target='to')
 
 nx.draw_spring(G)
 plt.show()
 
-"""
-G = nx.from_pandas_edgelist(TTE.head(), source='from', target='to', edge_attr='gas')
-
-width = np.array([w for *_, w in G.edges.data('gas')])
-
-pos = nx.spring_layout(G)
-
-#nodes
-nx.draw_networkx_nodes(G, pos, node_size=700)
-
-# edges
-nx.draw_networkx_edges(G, pos, width=width*10)  # using a 10x scale factor here
-
-# labels
-nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")
-
-ax = plt.gca()
-ax.margins(0.08)
-plt.axis("off")
-plt.tight_layout()
-
-
-
-
-"""
 
 
 
