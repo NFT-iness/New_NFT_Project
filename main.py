@@ -151,7 +151,7 @@ Contract_Adresses = {
 }
 
 
-
+#Combining all of the NFT Transaction Informations in one DataFrame:
 def getDF(Contract_Adresses: dict):
 
     adresses = Contract_Adresses.values()
@@ -222,12 +222,19 @@ def CentralityGraph(df):
     # Compute centrality
     centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
 
+    # Dictionary for mapping node names to scores of 'centrality'
+    node_centrality = dict(centrality)
+
+    top_nodes = sorted(node_centrality, key=node_centrality.get, reverse=True)[:10]
+
+    node_labels = {node: node for node in top_nodes}
+
     # Compute community structure
     lpc = nx.community.label_propagation_communities(G)
     community_index = {n: i for i, com in enumerate(lpc) for n in com}
 
     # Draw graph
-    nx.draw(G, node_color=[community_index[n] for n in G], node_size=[v * 2000 for v in centrality.values()])
+    nx.draw(G, node_color=[community_index[n] for n in G], node_size=[v * 2000 for v in centrality.values()], labels=node_labels)
     plt.show()
 
 
@@ -237,6 +244,8 @@ def NetworkGraph(df):
     plt.show()
 
 CentralityGraph(df)
+
+
 
 
 
