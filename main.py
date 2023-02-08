@@ -208,11 +208,35 @@ class Analyse_Dataset:
 import networkx as nx
 import scipy as sp
 
-G = nx.from_pandas_edgelist(df, source='from', target='to')
+def CentralityGraph(df):
+    # Convert DataFrame into an adjacency list
+    edges = []
+    for index, row in df.iterrows():
+        edge = (row['from'], row['to'], {'tokenID': row['tokenID'], 'gasUsed': row['gasUsed']})
+        edges.append(edge)
 
-nx.draw_spring(G)
-plt.show()
+    # Create graph object
+    G = nx.Graph()
+    G.add_edges_from(edges)
 
+    # Compute centrality
+    centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
+
+    # Compute community structure
+    lpc = nx.community.label_propagation_communities(G)
+    community_index = {n: i for i, com in enumerate(lpc) for n in com}
+
+    # Draw graph
+    nx.draw(G, node_color=[community_index[n] for n in G], node_size=[v * 2000 for v in centrality.values()])
+    plt.show()
+
+
+def NetworkGraph(df):
+    G = nx.from_pandas_edgelist(df, source='from', target='to')
+    nx.draw_spring(G)
+    plt.show()
+
+CentralityGraph(df)
 
 
 
