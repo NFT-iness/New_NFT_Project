@@ -119,7 +119,7 @@ class TokenTransferEvents:
             'action': 'tokennfttx',
             'address': ContractAddress,
             'page': 1,
-            'offset': 100,
+            'offset': 100,            #10000 is max, more does the api not support
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -136,6 +136,7 @@ class TokenTransferEvents:
 
 
 #Dictionary for the ContractAdresses of the NFT Collections we are getting the Data from
+#After "The Sandbox" the Top 10 Art NFTs where included
 Contract_Adresses = {
     "Bored Ape Yacht Club": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
     "CryptoPunks": "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
@@ -146,12 +147,24 @@ Contract_Adresses = {
     "Moonbirds": "0x23581767a106ae21c074b2276d25e5c3e136a68b",
     "Doodles": "0x8a90cab2b38dba80c64b7734e58ee1db38b8992e",
     "Bored Ape Kennel Club": "0xba30e5f9bb24caa003e9f2f0497ad287fdf95623",
-    "The Sandbox": "0x5cc5b05a8a13e3fbdb0bb9fccd98d38e50f90c38"
+    "The Sandbox": "0x5cc5b05a8a13e3fbdb0bb9fccd98d38e50f90c38",
+    "CrypToadz": "0x1cb1a5e65610aeff2551a50f76a87a7d3fb649c6",
+    "SuperRare": "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0",
+    "Chromie Squiggle": "0x059edd72cd353df5106d2b9cc5ab83a52287ac3a",
+    "My Curio Cards": "0x73da73ef3a6982109c4d5bdb0db9dd3e3783f313",
+    "Deadfellaz": "0x2acab3dea77832c09420663b0e1cb386031ba17b",
+    "Meridian": "0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270",
+    "Checks": "0x34eebee6942d8def3c125458d1a86e0a897fd6f9",
+    "Dooplicator": "0x466cfcd0525189b573e794f554b8a751279213ac",
+    "FULL SEND METACARD NFT": "0x7ecb204fed7e386386cab46a1fcb823ec5067ad5",
+    "MakersPlace": "0x2a46f2ffd99e19a89476e2f62270e0a35bbf0756"
 
 }
 
 
 #Combining all of the NFT Transaction Informations in one DataFrame:
+
+"""""
 def getDF(Contract_Adresses: dict):
 
     adresses = Contract_Adresses.values()
@@ -164,7 +177,26 @@ def getDF(Contract_Adresses: dict):
 
     df = pd.concat(dfs)
     return df
+"""
 
+
+def getDF(Contract_Adresses: dict):
+    adresses = Contract_Adresses.values()
+    labels = Contract_Adresses.keys()
+    dfs = []
+
+    for i, j in zip(adresses, labels):
+        run = TokenTransferEvents().__int__(i)
+        df_A = pd.DataFrame(run).assign(label=j)
+        dfs.append(df_A)
+
+    df1 = pd.concat(dfs[:10])
+    df1["label"] = "NFT_all"
+    df2 = pd.concat(dfs[10:])
+    df2["label"] = "NFT_art"
+
+    df = pd.concat([df1, df2])
+    return df
 
 df = getDF(Contract_Adresses)
 
@@ -233,8 +265,14 @@ def CentralityGraph(df):
     lpc = nx.community.label_propagation_communities(G)
     community_index = {n: i for i, com in enumerate(lpc) for n in com}
 
+    # Extracting the last column "label" from the DataFrame
+    labels = df['label'].to_dict()
+
+    # Creating list of colors based on the labels
+    colors = [labels.get(node, 'blue') for node in G.nodes()]
+
     # Draw graph
-    nx.draw(G, node_color=[community_index[n] for n in G], node_size=[v * 2000 for v in centrality.values()], labels=node_labels)
+    nx.draw(G, node_color=colors, node_size=[v * 2000 for v in centrality.values()], labels=node_labels)
     plt.show()
 
 
@@ -243,7 +281,8 @@ def NetworkGraph(df):
     nx.draw_spring(G)
     plt.show()
 
-CentralityGraph(df)
+
+CentralityGraph(df)        #Either use df or df_Drop to visualize the data
 
 
 
