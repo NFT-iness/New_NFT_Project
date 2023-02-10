@@ -265,6 +265,8 @@ def CentralityGraph(df):
     lpc = nx.community.label_propagation_communities(G)
     community_index = {n: i for i, com in enumerate(lpc) for n in com}
 
+    label_mapping = {node: data['label'] for node, data in df.iterrows()}
+
     # Extracting the last column "label" from the DataFrame
     labels = df['label'].to_dict()
 
@@ -276,13 +278,49 @@ def CentralityGraph(df):
     plt.show()
 
 
+#Network Graph colored different NFTs:
+
+def colNetGraph(df):
+    # Create an empty graph
+    G = nx.Graph()
+
+    # Add nodes
+    for index, row in df.iterrows():
+        G.add_node(row["from"], label=row["label"])
+        G.add_node(row["to"], label=row["label"])
+
+    # Add edges
+    for index, row in df.iterrows():
+        G.add_edge(row["from"], row["to"], weight=row["gasUsed"])
+
+    # Get a list of unique labels
+    labels = list(set(df["label"]))
+
+    # Map the labels to colors
+    label_colors = {label: color for label, color in
+                    zip(labels, plt.get_cmap('viridis')(np.linspace(0, 1, len(labels))))}
+
+    # Map the nodes to their respective labels
+    label_mapping = nx.get_node_attributes(G, 'label')
+
+    # Compute centrality
+    centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
+
+    # Color the nodes based on their labels
+    node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
+
+    # Draw the graph
+    nx.draw(G, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
+    plt.show()
+
+#First NetworkGraph
 def NetworkGraph(df):
     G = nx.from_pandas_edgelist(df, source='from', target='to')
     nx.draw_spring(G)
     plt.show()
 
-
-CentralityGraph(df)        #Either use df or df_Drop to visualize the data
+colNetGraph(df)
+#CentralityGraph(df)        #Either use df or df_Drop to visualize the data
 
 
 
