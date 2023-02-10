@@ -290,6 +290,8 @@ def colNetGraph(df):
         G.add_node(row["from"], label=row["label"])
         G.add_node(row["to"], label=row["label"])
 
+    df["gasUsed"] = df["gasUsed"].astype(int)
+
     # Add edges
     for index, row in df.iterrows():
         G.add_edge(row["from"], row["to"], weight=row["gasUsed"])
@@ -311,7 +313,7 @@ def colNetGraph(df):
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
     # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
-    pos = nx.fruchterman_reingold_layout(G) #STILL NOT GOOD ENOUGH, TRY ALSO OTHER LAYOUTS!
+    pos = nx.kamada_kawai_layout(G) #STILL NOT GOOD ENOUGH, TRY ALSO OTHER LAYOUTS!
 
     # Draw the graph
     nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
