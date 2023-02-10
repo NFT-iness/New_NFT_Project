@@ -119,7 +119,7 @@ class TokenTransferEvents:
             'action': 'tokennfttx',
             'address': ContractAddress,
             'page': 1,
-            'offset': 100,            #10000 is max, more does the api not support
+            'offset': 100,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -157,29 +157,26 @@ Contract_Adresses = {
     "Checks": "0x34eebee6942d8def3c125458d1a86e0a897fd6f9",
     "Dooplicator": "0x466cfcd0525189b573e794f554b8a751279213ac",
     "FULL SEND METACARD NFT": "0x7ecb204fed7e386386cab46a1fcb823ec5067ad5",
-    "MakersPlace": "0x2a46f2ffd99e19a89476e2f62270e0a35bbf0756"
+    "MakersPlace": "0x2a46f2ffd99e19a89476e2f62270e0a35bbf0756",
+    "Parallel Alpha": "0x76be3b62873462d2142405439777e971754e8e77",
+    "Wolf Game": "0x76be3b62873462d2142405439777e971754e8e77",
+    "Worldwide Webb Land": "0xa1d4657e0e6507d5a94d06da93e94dc7c8c44b51",
+    "Town Star": "0xc36cf0cfcb5d905b8b513860db0cfe63f6cf9f5c",
+    "Impostors Genesis Alien": "0x3110ef5f612208724ca51f5761a69081809f03b7",
+    "Rumble Kong League": "0xef0182dc0574cd5874494a120750fd222fdb909a",
+    "My Pet Hooligan": "0x09233d553058c2f42ba751c87816a8e9fae7ef10",
+    "Mirandus": "0xc36cf0cfcb5d905b8b513860db0cfe63f6cf9f5c",
+    "Pixelmon": "0x32973908faee0bf825a343000fe412ebe56f802a",
+    "Treeverse Plots": "0x1b829b926a14634d36625e60165c0770c09d02b2",
+    "adidas Originals Into the Metaverse": "0x28472a58a490c5e09a238847f66a68a47cc76f0f",
+    "PROOF Collective": "0x08d7c0242953446436f34b4c78fe9da38c73668d",
+    "oncyber labs": "0x226bf5293692610692e2c996c9875c914d2a7f73"
+
 
 }
 
 
 #Combining all of the NFT Transaction Informations in one DataFrame:
-
-"""""
-def getDF(Contract_Adresses: dict):
-
-    adresses = Contract_Adresses.values()
-    dfs = []
-
-    for i in adresses:
-        run = TokenTransferEvents().__int__(i)
-        df_A = pd.DataFrame(run)
-        dfs.append(df_A)
-
-    df = pd.concat(dfs)
-    return df
-"""
-
-
 def getDF(Contract_Adresses: dict):
     adresses = Contract_Adresses.values()
     labels = Contract_Adresses.keys()
@@ -192,10 +189,14 @@ def getDF(Contract_Adresses: dict):
 
     df1 = pd.concat(dfs[:10])
     df1["label"] = "NFT_all"
-    df2 = pd.concat(dfs[10:])
+    df2 = pd.concat(dfs[10:20])
     df2["label"] = "NFT_art"
+    df3 = pd.concat(dfs[20:30])
+    df3["label"] = "NFT_gaming"
+    df4 = pd.concat(dfs[30:])
+    df4["label"] = "NFT_membership"
 
-    df = pd.concat([df1, df2])
+    df = pd.concat([df1, df2, df3])
     return df
 
 df = getDF(Contract_Adresses)
@@ -310,10 +311,11 @@ def colNetGraph(df):
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
     # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
-    pos = nx.fruchterman_reingold_layout(G)
+    pos = nx.fruchterman_reingold_layout(G) #STILL NOT GOOD ENOUGH, TRY ALSO OTHER LAYOUTS!
 
     # Draw the graph
     nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
+    nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
     plt.show()
 
 #First NetworkGraph
