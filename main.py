@@ -309,8 +309,11 @@ def colNetGraph(df):
     # Color the nodes based on their labels
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
+    # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
+    pos = nx.fruchterman_reingold_layout(G)
+
     # Draw the graph
-    nx.draw(G, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
+    nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
     plt.show()
 
 #First NetworkGraph
