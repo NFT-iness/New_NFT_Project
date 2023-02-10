@@ -313,7 +313,7 @@ def colNetGraph(df):
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
     # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
-    pos = nx.kamada_kawai_layout(G) #STILL NOT GOOD ENOUGH, TRY ALSO OTHER LAYOUTS!
+    pos = nx.kamada_kawai_layout(G) #Best alternative layout to kamada_kawai found: nx.planar_layout(G)
 
     # Draw the graph
     nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
@@ -326,7 +326,7 @@ def NetworkGraph(df):
     nx.draw_spring(G)
     plt.show()
 
-colNetGraph(df)
+colNetGraph(df_Drop)
 #CentralityGraph(df)        #Either use df or df_Drop to visualize the data
 
 
