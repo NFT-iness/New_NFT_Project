@@ -8,6 +8,7 @@ import requests
 import matplotlib.pyplot as plt
 import urllib
 from urllib.request import Request, urlopen
+from matplotlib.patches import Patch
 import snscrape.modules.twitter as sntwitter
 from bs4 import BeautifulSoup as bs
 from requests import get
@@ -67,6 +68,10 @@ r1 = r1_input.FindTopics()
 print(r1)
 
 """
+
+#Class for Twitter Scrapping:
+
+
 
 ############################## Scrapping Etherium Blockchain from Ehterscan#############################################
 
@@ -259,23 +264,23 @@ def getDF(Contract_Adresses: dict):
         dfs.append(df_A)
 
     df1 = pd.concat(dfs[:10])
-    df1["label"] = "NFT_art"
+    df1["label"] = "Art"
     df2 = pd.concat(dfs[10:25])
-    df2["label"] = "NFT_collectibles"
+    df2["label"] = "Collectibles"
     df3 = pd.concat(dfs[25:35])
-    df3["label"] = "NFT_DomainNames"
+    df3["label"] = "DomainNames"
     df4 = pd.concat(dfs[35:45])
-    df4["label"] = "NFT_music"
+    df4["label"] = "Music"
     df5 = pd.concat(dfs[45:55])
-    df5["label"] = "NFT_photograpy"
+    df5["label"] = "Photography"
     df6 = pd.concat(dfs[55:65])
-    df6["label"] = "NFT_sports"
+    df6["label"] = "Sports"
     df7 = pd.concat(dfs[65:75])
-    df7["label"] = "NFT_trading_cards"
+    df7["label"] = "Trading_cards"
     df8 = pd.concat(dfs[75:85])
-    df8["label"] = "NFT_utility"
+    df8["label"] = "Utility"
     df9 = pd.concat(dfs[85:95])
-    df9["label"] = "NFT_virtual_worlds"
+    df9["label"] = "Virtual_worlds"
 
     df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
     return df
@@ -322,47 +327,9 @@ class Analyse_Dataset:
 import networkx as nx
 import scipy as sp
 
-def CentralityGraph(df):
-    # Convert DataFrame into an adjacency list
-    edges = []
-    for index, row in df.iterrows():
-        edge = (row['from'], row['to'], {'tokenID': row['tokenID'], 'gasUsed': row['gasUsed']})
-        edges.append(edge)
-
-    # Create graph object
-    G = nx.Graph()
-    G.add_edges_from(edges)
-
-    # Compute centrality
-    centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
-
-    # Dictionary for mapping node names to scores of 'centrality'
-    node_centrality = dict(centrality)
-
-    top_nodes = sorted(node_centrality, key=node_centrality.get, reverse=True)[:10]
-
-    node_labels = {node: node for node in top_nodes}
-
-    # Compute community structure
-    lpc = nx.community.label_propagation_communities(G)
-    community_index = {n: i for i, com in enumerate(lpc) for n in com}
-
-    label_mapping = {node: data['label'] for node, data in df.iterrows()}
-
-    # Extracting the last column "label" from the DataFrame
-    labels = df['label'].to_dict()
-
-    # Creating list of colors based on the labels
-    colors = [labels.get(node, 'blue') for node in G.nodes()]
-
-    # Draw graph
-    nx.draw(G, node_color=colors, node_size=[v * 2000 for v in centrality.values()], labels=node_labels)
-    plt.show()
-
-
 #Network Graph colored different NFTs:
 
-def colNetGraph(df):
+def LabeldNetGraph(df):
     # Create an empty graph
     G = nx.Graph()
 
@@ -398,17 +365,60 @@ def colNetGraph(df):
 
     # Draw the graph
     nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
-    nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
+    #nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
+
+    # Create a custom legend
+    patches = [Patch(color=color, label=label) for label, color in label_colors.items()]
+    plt.legend(handles=patches, loc='upper left', frameon=False)
+
     plt.show()
 
 #First NetworkGraph
 def NetworkGraph(df):
-    G = nx.from_pandas_edgelist(df, source='from', target='to')
-    nx.draw_spring(G)
+    G = nx.Graph()
+
+    # Add nodes
+    for index, row in df.iterrows():
+        G.add_node(row["from"], label=row["label"])
+        G.add_node(row["to"], label=row["label"])
+
+    df["gasUsed"] = df["gasUsed"].astype(int)
+
+    # Add edges
+    for index, row in df.iterrows():
+        G.add_edge(row["from"], row["to"], weight=row["gasUsed"])
+
+    # Get a list of unique labels
+    labels = list(set(df["label"]))
+
+    # Map the labels to colors
+    label_colors = {label: color for label, color in
+                    zip(labels, plt.get_cmap('viridis')(np.linspace(0, 1, len(labels))))}
+
+    # Map the nodes to their respective labels
+    label_mapping = nx.get_node_attributes(G, 'label')
+
+    # Compute centrality
+    centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
+
+    # Color the nodes based on their labels
+    node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
+
+    # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
+    pos = nx.kamada_kawai_layout(G)  # Best alternative layout to kamada_kawai found: nx.planar_layout(G)
+
+    # Draw the graph
+    nx.draw(G, pos, node_color=node_colors, labels={}, node_size=[v * 5000 for v in centrality.values()])
+    # nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
+
+    # Create a custom legend
+    patches = [Patch(color=color, label=label) for label, color in label_colors.items()]
+    plt.legend(handles=patches, loc='upper left', frameon=False)
+
     plt.show()
 
-colNetGraph(df_Drop)
-#CentralityGraph(df)        #Either use df or df_Drop to visualize the data
+LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy
+#NetworkGraph(df)           #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
 
 
 
