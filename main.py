@@ -6,8 +6,9 @@ import praw
 import json
 import requests
 import matplotlib.pyplot as plt
-import urllib
-from urllib.request import Request, urlopen
+import datetime
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from scipy.special import softmax
 from matplotlib.patches import Patch
 import snscrape.modules.twitter as sntwitter
 from bs4 import BeautifulSoup as bs
@@ -24,7 +25,7 @@ pd.set_option('display.max_columns',20)
 
 ###################### Scrapping - Social Media #################################################################
 
-#Class for RedditScrapping
+#RedditScrapping
 class ScrapeReddit:
     def __init__(self, user_agent, client_id, client_secret):
         self.user_agent= user_agent
@@ -68,9 +69,6 @@ r1 = r1_input.FindTopics()
 print(r1)
 
 """
-
-#Class for Twitter Scrapping:
-
 
 
 ############################## Scrapping Etherium Blockchain from Ehterscan#############################################
@@ -283,11 +281,15 @@ def getDF(Contract_Adresses: dict):
     df9["label"] = "Virtual_worlds"
 
     df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
+
+    #changing the UNIX timestamp into useable date-time values:
+    df['timeStamp'] = df['timeStamp'].astype(int)
+    df['timeStamp'] = df['timeStamp'].apply(lambda x: datetime.datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
+
     return df
 
 df = getDF(Contract_Adresses)
 
-#df = TokenTransferEvents().__int__("0x34d85c9cdeb23fa97cb08333b511ac86e1c4e258")
 print(df.info())
 
 
@@ -300,7 +302,8 @@ pd.set_option('display.max_rows', None)
 
 df_Drop = DataSelection(df, "transactionIndex")
 
-print(df_Drop)
+print(df_Drop.info())
+print(df_Drop.head())
 
 #print(TTE['from'].value_counts())
 #print(TTE['to'].value_counts())
@@ -417,8 +420,49 @@ def NetworkGraph(df):
 
     plt.show()
 
-LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy
+def ScatterC(df):
+    df_plot = df[['tokenID', 'label']]
+
+    plt.scatter(df_plot['tokenID'], df_plot['label'])
+
+    plt.xlabel('NFT Tokens')
+    plt.ylabel('NFT Genres')
+    plt.title('Distribution of Tokens among the NFT Genres')
+
+    plt.show()
+
+def BarC(df):
+    df_count = df['label'].value_counts()
+    df_count.plot(kind='bar')
+    plt.title('NFT Popularity')
+    plt.xticks(rotation=25)
+    plt.show()
+
+def LinePlot(df):
+    grouped = df.groupby('label')
+    fig, ax = plt.subplots()
+
+    # Plot each group in a different line
+    for name, group in grouped:
+        group['gasUsed'] = group['gasUsed'].astype(int)
+        group.set_index('timeStamp').plot(ax=ax, y='gasUsed', label=name)
+
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Used Gas')
+    ax.legend()
+    plt.title('GasUsed Over Time on different NFTs')
+    plt.show()
+
+
+
+
+
+################################Executng Plots#########################################################################
+
+#LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy
 #NetworkGraph(df)           #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
+#BarC(df)
+#LinePlot(df)
 
 
 
