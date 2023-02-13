@@ -122,7 +122,7 @@ class TokenTransferEvents:
             'action': 'tokennfttx',
             'address': ContractAddress,
             'page': 1,
-            'offset': 100,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
+            'offset': 10000,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -367,8 +367,8 @@ def LabeldNetGraph(df):
     pos = nx.kamada_kawai_layout(G) #Best alternative layout to kamada_kawai found: nx.planar_layout(G)
 
     # Draw the graph
-    nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 2000 for v in centrality.values()])
-    #nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
+    nx.draw(G, pos, node_color=node_colors, labels=label_mapping, node_size=[v * 1500 for v in centrality.values()])
+    nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
 
     # Create a custom legend
     patches = [Patch(color=color, label=label) for label, color in label_colors.items()]
@@ -411,8 +411,8 @@ def NetworkGraph(df):
     pos = nx.kamada_kawai_layout(G)  # Best alternative layout to kamada_kawai found: nx.planar_layout(G)
 
     # Draw the graph
-    nx.draw(G, pos, node_color=node_colors, labels={}, node_size=[v * 5000 for v in centrality.values()])
-    # nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
+    nx.draw(G, pos, node_color=node_colors, labels={}, node_size=[v * 2500 for v in centrality.values()], edge_color='gainsboro', alpha=0.4)
+    #nx.draw_networkx_labels(G, pos, labels= label_mapping, font_size=0.05) #making the text size doesn't really work...
 
     # Create a custom legend
     patches = [Patch(color=color, label=label) for label, color in label_colors.items()]
@@ -459,9 +459,9 @@ def LinePlot(df):
 
 ################################Executng Plots#########################################################################
 
-#LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy
-#NetworkGraph(df)           #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
-#BarC(df)
+#LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy, => USING df_Drop AS NORMALIZED?????????????????????????????????
+#NetworkGraph(df_Drop)            #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
+#BarC(df_Drop)
 #LinePlot(df)
 
 
