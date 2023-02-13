@@ -122,7 +122,7 @@ class TokenTransferEvents:
             'action': 'tokennfttx',
             'address': ContractAddress,
             'page': 1,
-            'offset': 10000,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
+            'offset': 100,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -457,11 +457,29 @@ def LinePlot(df):
 
 
 
+################################Analysis#########################################################################
+
+"""""
+Hyperparameter that change our plots/results:
+- using the 'normalized' (df_Drop) Version of our DataFrame
+- 'Offset' in the 'TokenTransferEvents' class => Going further back in time the majority of traded NFTs are 
+  Collectibles and Art. Other genres like 'sport cards', 'virtual worlds' etc. where later on introduced 
+
+Further Restrictions:
+- we are using (with one exception) only the Top10 rated Collections of each NFT genre
+
+Recommendation:
+- if the network graph shall capture also transactions between newer types of NFTs Offset should be set to 100
+  and then either NetworkGraph or LabeldNetGraph can be plotted to study the traffic or bubble creation between
+  different NFTs
+ 
+"""""
+
 ################################Executng Plots#########################################################################
 
 #LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy, => USING df_Drop AS NORMALIZED?????????????????????????????????
-#NetworkGraph(df_Drop)            #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
-#BarC(df_Drop)
+NetworkGraph(df_Drop)            #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
+BarC(df_Drop)
 #LinePlot(df)
 
 
