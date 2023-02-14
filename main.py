@@ -24,24 +24,22 @@ pd.set_option('display.max_columns',20)
 ######################################
 
 #reading in csv Data to work with:
-def GetData(CSV_file):
-    df = pd.read_csv(CSV_file)
-    return df
+class NFTDataProcessor:
+    def __init__(self, csv_file):
+        self.df = pd.read_csv(csv_file)
 
+    def normalize_data(self, column):
+        self.df = self.df.drop_duplicates(subset=[column])
 
+    def get_data(self):
+        return self.df
 
-#normalization of the Data
-def DataSelection(DataFrame, column):
-    df = DataFrame.drop_duplicates(subset=[column])
-    return df
+processor1 = NFTDataProcessor('NFT_RawData_Offset100')
+df = processor1.get_data()
 
-
-GetData('NFT_RawData_Offset100')
-
-
-pd.set_option('display.max_rows', None)
-
-df_Drop = DataSelection(GetData('NFT_RawData_Offset100'), "transactionIndex")
+processor2 = NFTDataProcessor('NFT_RawData_Offset100')
+processor2.normalize_data('transactionIndex')
+df_Drop = processor2.get_data()
 
 print(df_Drop.info())
 print(df_Drop.head())
