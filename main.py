@@ -41,7 +41,7 @@ processor2 = NFTDataProcessor('NFT_RawData_Offset100')
 processor2.normalize_data('transactionIndex')
 df_Drop = processor2.get_data()
 
-print(df_Drop.info())
+print(df_Drop.tail())
 print(df_Drop.head())
 
 
@@ -62,7 +62,7 @@ class Analyse_Dataset:
 
 #Network Graph colored different NFTs:
 
-def LabeldNetGraph(df):
+def LabelNetGraph(df):
     # Create an empty graph
     G = nx.Graph()
 
@@ -93,7 +93,7 @@ def LabeldNetGraph(df):
     # Color the nodes based on their labels
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
-    # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
+    # Resizing with different layout to fix Data overlapping issues
     pos = nx.kamada_kawai_layout(G) #Best alternative layout to kamada_kawai found: nx.planar_layout(G)
 
     # Draw the graph
@@ -137,7 +137,7 @@ def NetworkGraph(df):
     # Color the nodes based on their labels
     node_colors = [label_colors[label_mapping[node]] for node in G.nodes()]
 
-    # Resizing with Fruchterman-Reingold layout to fix Data overlapping issues
+    # Resizing with different layout to fix Data overlapping issues
     pos = nx.kamada_kawai_layout(G)  # Best alternative layout to kamada_kawai found: nx.planar_layout(G)
 
     # Draw the graph
@@ -146,8 +146,47 @@ def NetworkGraph(df):
 
     # Create a custom legend
     patches = [Patch(color=color, label=label) for label, color in label_colors.items()]
-    plt.legend(handles=patches, loc='upper left', frameon=False)
 
+    plt.legend(handles=patches, loc='upper left', frameon=False, title="Offset10000, DataNormalized")
+    plt.show()
+
+def NetGraph_Rec(df):
+    # Convert DataFrame into an adjacency list
+    edges = []
+    for index, row in df.iterrows():
+        edge = (row['from'], row['to'], {'tokenID': row['tokenID'], 'gasUsed': row['gasUsed']})
+        edges.append(edge)
+    # Create graph object
+    G = nx.Graph()
+    G.add_edges_from(edges)
+    # Compute centrality
+    centrality = nx.betweenness_centrality(G, k=10, endpoints=True)
+
+    # Get a list of unique labels
+    labels = list(set(df["label"]))
+
+    # Dictionary for mapping node names to scores of 'centrality'
+    node_centrality = dict(centrality)
+
+    top_nodes = sorted(node_centrality, key=node_centrality.get, reverse=True)[:10]
+
+    node_labels = {node: node for node in top_nodes}
+
+    # Compute community structure
+    lpc = nx.community.label_propagation_communities(G)
+    community_index = {n: i for i, com in enumerate(lpc) for n in com}
+
+    # Resizing with different layout to fix Data overlapping issues
+    pos = nx.kamada_kawai_layout(G)  # Best alternative layout to kamada_kawai found: nx.planar_layout(G)
+
+    # Draw graph
+    #nx.draw(G, node_color=[community_index[n] for n in G], node_size=[v * 2000 for v in centrality.values()],
+            #labels=node_labels)
+
+    nx.draw(G, pos,  node_size=[v * 2500 for v in centrality.values()], labels=node_labels,
+            edge_color='gainsboro',  alpha=0.4)
+
+    #plt.legend(handles=patches, loc='upper left', frameon=False, title="Offset10000, DataNormalized")
     plt.show()
 
 def ScatterC(df):
@@ -166,6 +205,7 @@ def BarC(df):
     df_count.plot(kind='bar')
     plt.title('NFT Popularity')
     plt.xticks(rotation=25)
+    plt.title("Offset100, NotNorm")
     plt.show()
 
 def LinePlot(df):
@@ -207,10 +247,14 @@ Recommendation:
 
 ################################Executng Plots#########################################################################
 
-#LabeldNetGraph(df_Drop)     #df_Drop, otherwise to messy, => USING df_Drop AS NORMALIZED?????????????????????????????????
-NetworkGraph(df_Drop)            #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
-#BarC(df_Drop)
+#LabelNetGraph(df_Drop)     #df_Drop, otherwise to messy, => USING df_Drop AS NORMALIZED?????????????????????????????????
+#NetworkGraph(df_Drop)            #df can be used because this graph doesn't use labels and can be analyzed by comparing the nodes
+#BarC(df)
 #LinePlot(df)
+
+NetGraph_Rec(df)
+
+
 
 
 
