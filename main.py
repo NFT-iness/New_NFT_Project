@@ -34,15 +34,15 @@ class NFTDataProcessor:
     def get_data(self):
         return self.df
 
-processor1 = NFTDataProcessor('NFT_RawData_Offset100')
-df = processor1.get_data()
+#Transforming Dataset (Deleting & Normalizing Data)
+processor = NFTDataProcessor('NFT_RawData_Offset1000')
+processor.normalize_data('transactionIndex')
+df = processor.get_data()
+df = df.drop(['tokenSymbol', 'tokenDecimal', 'cumulativeGasUsed', 'input', 'confirmations'], axis=1)
+df = df.drop(columns=df.columns[0], axis=1)
 
-processor2 = NFTDataProcessor('NFT_RawData_Offset100')
-processor2.normalize_data('transactionIndex')
-df_Drop = processor2.get_data()
-
-print(df_Drop.tail())
-print(df_Drop.head())
+print(df.tail())
+print(df.head())
 
 
 
@@ -172,6 +172,9 @@ def NetGraph_Rec(df):
 
     node_labels = {node: node for node in top_nodes}
 
+    # Define a dictionary to map labels to colors
+    label_color_dict = {label: f"C{i}" for i, label in enumerate(labels)}
+
     # Compute community structure
     lpc = nx.community.label_propagation_communities(G)
     community_index = {n: i for i, com in enumerate(lpc) for n in com}
@@ -252,7 +255,7 @@ Recommendation:
 #BarC(df)
 #LinePlot(df)
 
-NetGraph_Rec(df)
+NetGraph_Rec(df_Drop)
 
 
 

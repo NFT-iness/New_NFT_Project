@@ -114,7 +114,7 @@ class TokenTransferEvents:
             'action': 'tokennfttx',
             'address': ContractAddress,
             'page': 1,
-            'offset': 100,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
+            'offset': 1000,            #10000 is max, more does the api not support, using more than 100 costs a lot of computational power with same results => the pattern are similar
             'startblock': 0,
             'endblock': 27025780,
             'sort': 'asc',
@@ -283,6 +283,6 @@ def getDF(Contract_Adresses: dict):
 df = getDF(Contract_Adresses)
 
 #Data to csv:
-df.to_csv(r'NFT_RawData_Offset10000')
+df.to_csv(r'NFT_RawData_Offset1000')
 
 print(df.info())
