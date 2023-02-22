@@ -40,6 +40,70 @@ iframe{
   overflow: hidden !important;
 }
 
+/*for gif*/
+#gif-0 {
+  font-size: 23px;
+  line-height: 10px;
+  background:  url(https://media0.giphy.com/media/3oEjHECc1GftirnHZm/giphy.gif?cid=ecf05e47pjn7ov467318oeu76ehyamqsy0f4iarta8vich2k&rid=giphy.gif&ct=g) no-repeat;
+/*   Artwork by Xaviera López */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+  font-weight: 900;
+  margin: 0;
+  mix-blend-mode: darken;
+/*   try different modes! */
+}
+#gif-1{
+  font-size: 23px;
+  line-height: 10px;
+  background:  url(https://media1.giphy.com/media/3o6ozEBAfTEPlcZZcI/giphy.gif?cid=ecf05e47flvvv7lfw52e11np2hicjusksh2axsboeelfuvu6&rid=giphy.gif&ct=g) no-repeat;
+/*   Artwork by Xaviera López */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+  font-weight: 900;
+  margin: 0;
+  mix-blend-mode: darken;
+/*   try different modes! */
+}
+
+#gif-2{
+  font-size: 23px;
+  line-height: 10px;
+  background:  url(https://media4.giphy.com/media/l4Jzi0iyKHLe1qT9S/giphy.gif?cid=ecf05e47xpoi2udupaz3o0tjuobunjm7fhbtaxf4aigms2ta&rid=giphy.gif&ct=g) no-repeat;
+/*   Artwork by Xaviera López */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+  font-weight: 900;
+  margin: 0;
+  mix-blend-mode: darken;
+/*   try different modes! */
+}
+
+#gif-3{
+  font-size: 23px;
+  line-height: 10px;
+  background:  url(https://media2.giphy.com/media/3oEduTYElCtccvZoDC/giphy.gif?cid=ecf05e47scvqgs2mzk60wm0aq28efjuyur8bmwa0ytvyczli&rid=giphy.gif&ct=g) no-repeat;
+/*   Artwork by Xaviera López */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+  font-weight: 900;
+  margin: 0;
+  mix-blend-mode: darken;
+/*   try different modes! */
+}
+
 /*typography styles*/
 h1{
   color: #7d95ae;
@@ -54,7 +118,7 @@ h1{
 
 #page {
     overflow:hidden;
-    white-space:nowrap;
+    /*white-space:nowrap;*/
     position:fixed;
     top:0;
     left:0;
@@ -75,7 +139,7 @@ h1{
   }
   
   .pane:nth-child(4n+2)  {
-    background-color: #FFDBF5;
+    background-color: #202e38;
   }
   .pane:nth-child(4n+3)  {
     background-color: #F6FCFF;
@@ -84,7 +148,7 @@ h1{
     background-color: #DBFFEE;
   }
   .pane:last-child {
-    background-color: #FFF1DB;
+    background-color: #202e38;
   }
 
   footer.py-4{
