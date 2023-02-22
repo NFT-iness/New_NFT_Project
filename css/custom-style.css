@@ -30,6 +30,16 @@ body{
   color: #6c5a3e;
 }
 
+/*card styles*/
+.card-header{
+  background-color: #202e38 !important ;
+  color: #CCC;
+}
+
+iframe{
+  overflow: hidden !important;
+}
+
 /*typography styles*/
 h1{
   color: #7d95ae;
