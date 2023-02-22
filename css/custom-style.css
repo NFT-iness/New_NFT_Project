@@ -35,9 +35,17 @@ color: #6c5a3e;
 background-color: #202e38 !important ;
 color: #CCC;
 }
+.card-body{
+  background-color: rgb(32, 46, 56) !important;
+}
 
-iframe{
-overflow: hidden !important;
+.glass {
+  height: 100%;
+  width: 100%;
+  /*background-image: url("");*/
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px);
 }
 
 /*for gif*/
@@ -56,6 +64,20 @@ margin: 0;
 mix-blend-mode: darken;
 /*   try different modes! */
 }
+
+#gif-0 > p{
+  padding-right: 4rem;
+}
+#gif-1 > p{
+  padding-right: 4rem;
+}
+#gif-2 > p{
+  padding-right: 4rem;
+}
+#gif-3 > p{
+  padding-right: 4rem;
+}
+
 #gif-1{
 font-size: 23px;
 line-height: 10px;
@@ -100,21 +122,48 @@ background-attachment: fixed;
 -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
 font-weight: 900;
 margin: 0;
-mix-blend-mode: darken;
+mix-blend-mode: soft-light;
 /*   try different modes! */
 }
 
 /*typography styles*/
+a{
+  text-decoration: none;
+}
+
 h1{
 color: #7d95ae;
 }
 
+h2{
+  color: #7d95ae;
+  font-size: 22pt;
+}
+h3{
+  color: #7d95ae;
+  font-size: 16pt;
+}
+p{
+  color: rgba(209, 210, 232, 0.442);
+  font-size: 14pt;
+  padding-bottom: 2rem;
+}
+
 .pane > div > h1{
 font-size: 7rem !important;
+padding-right: 2rem;
 }
 .pane > div > a > h1{
-font-size: 7rem !important;
+font-size: 6rem !important;
+padding-right: 2rem;
 }
+
+/* imgs style*/
+.col-xl-6 > img{
+  width: 80%; 
+  padding: 1rem;
+}
+
 
 #page {
   overflow:hidden;
@@ -142,10 +191,11 @@ font-size: 7rem !important;
   background-color: #202e38;
 }
 .pane:nth-child(4n+3)  {
-  background-color: #F6FCFF;
+  background-color: #13232f;
 }
+
 .pane:nth-child(4n+4)  {
-  background-color: #DBFFEE;
+  background-color: #13232f;
 }
 .pane:last-child {
   background-color: #202e38;
@@ -164,6 +214,14 @@ footer.py-4{
 .mb-4 > .card-body{
   display: flex;
   column-gap: 2rem;
+}
+
+.btn1{
+  width: 12rem;
+  height: 4rem;
+  font-weight: bold;
+  color: azure;
+  background-color: rgba(36, 44, 85, 0.5);
 }
 
 @media(min-width: 992px){
