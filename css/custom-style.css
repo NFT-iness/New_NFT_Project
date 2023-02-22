@@ -1,185 +1,173 @@
 
 body{
-    overflow-x:hidden;
-    background-color: #202e38 !important;
+  overflow-x:hidden;
+  background-color: #202e38 !important;
 }
 
 .bg-dark{
-  /*background-color:#181B25 !important;*/
-  /*background-color:#1e3546 !important;*/
-  background-color:#13232f !important;
-  
+/*background-color:#181B25 !important;*/
+/*background-color:#1e3546 !important;*/
+background-color:#13232f !important;
+
 }
 .sb-sidenav-dark{
-  background-color: rgba(0, 0,0, 0) !important;
+background-color: rgba(0, 0,0, 0) !important;
 }
 
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading{
-  color: #ff9b00;;
+color: #ff9b00;;
 }
 .navbar-dark .navbar-brand{
-  color: #6c5a3e;
+color: #6c5a3e;
 }
 .navbar-dark .navbar-nav .nav-link{
-  color: #6c5a3e;
+color: #6c5a3e;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link{
-  color: rgba(153, 63, 63, 0.5);
+color: rgba(153, 63, 63, 0.5);
 }
 .sb-topnav.navbar-dark #sidebarToggle{
-  color: #6c5a3e;
+color: #6c5a3e;
 }
 
 /*card styles*/
 .card-header{
-  background-color: #202e38 !important ;
-  color: #CCC;
+background-color: #202e38 !important ;
+color: #CCC;
 }
 
 iframe{
-  overflow: hidden !important;
+overflow: hidden !important;
 }
 
 /*for gif*/
 #gif-0 {
-  font-size: 23px;
-  line-height: 10px;
-  background:  url(https://media0.giphy.com/media/3oEjHECc1GftirnHZm/giphy.gif?cid=ecf05e47pjn7ov467318oeu76ehyamqsy0f4iarta8vich2k&rid=giphy.gif&ct=g) no-repeat;
-  /*   Artwork by --- */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
-  font-weight: 900;
-  margin: 0;
-  mix-blend-mode: soft-light;
+font-size: 23px;
+line-height: 10px;
+background:  url(https://media0.giphy.com/media/3oEjHECc1GftirnHZm/giphy.gif?cid=ecf05e47pjn7ov467318oeu76ehyamqsy0f4iarta8vich2k&rid=giphy.gif&ct=g) no-repeat;
+/*   Artwork by Xaviera López */
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+-webkit-background-clip: text;
+-webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+font-weight: 900;
+margin: 0;
+mix-blend-mode: darken;
 /*   try different modes! */
 }
 #gif-1{
-  font-size: 23px;
-  line-height: 10px;
-  background:  url(https://media1.giphy.com/media/3o6ozEBAfTEPlcZZcI/giphy.gif?cid=ecf05e47flvvv7lfw52e11np2hicjusksh2axsboeelfuvu6&rid=giphy.gif&ct=g) no-repeat;
+font-size: 23px;
+line-height: 10px;
+background:  url(https://media1.giphy.com/media/3o6ozEBAfTEPlcZZcI/giphy.gif?cid=ecf05e47flvvv7lfw52e11np2hicjusksh2axsboeelfuvu6&rid=giphy.gif&ct=g) no-repeat;
 /*   Artwork by Xaviera López */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
-  font-weight: 900;
-  margin: 0;
-  mix-blend-mode: darken;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+-webkit-background-clip: text;
+-webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+font-weight: 900;
+margin: 0;
+mix-blend-mode: darken;
 /*   try different modes! */
 }
 
 #gif-2{
-  font-size: 23px;
-  line-height: 10px;
-  background:  url(https://media4.giphy.com/media/l4Jzi0iyKHLe1qT9S/giphy.gif?cid=ecf05e47xpoi2udupaz3o0tjuobunjm7fhbtaxf4aigms2ta&rid=giphy.gif&ct=g) no-repeat;
+font-size: 23px;
+line-height: 10px;
+background:  url(https://media4.giphy.com/media/l4Jzi0iyKHLe1qT9S/giphy.gif?cid=ecf05e47xpoi2udupaz3o0tjuobunjm7fhbtaxf4aigms2ta&rid=giphy.gif&ct=g) no-repeat;
 /*   Artwork by Xaviera López */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
-  font-weight: 900;
-  margin: 0;
-  mix-blend-mode: darken;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+-webkit-background-clip: text;
+-webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+font-weight: 900;
+margin: 0;
+mix-blend-mode: darken;
 /*   try different modes! */
 }
 
 #gif-3{
-  font-size: 23px;
-  line-height: 10px;
-  background:  url(https://media2.giphy.com/media/3oEduTYElCtccvZoDC/giphy.gif?cid=ecf05e47scvqgs2mzk60wm0aq28efjuyur8bmwa0ytvyczli&rid=giphy.gif&ct=g) no-repeat;
+font-size: 23px;
+line-height: 10px;
+background:  url(https://media2.giphy.com/media/3oEduTYElCtccvZoDC/giphy.gif?cid=ecf05e47scvqgs2mzk60wm0aq28efjuyur8bmwa0ytvyczli&rid=giphy.gif&ct=g) no-repeat;
 /*   Artwork by Xaviera López */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(15, 25, 255, 0) ;
-  font-weight: 900;
-  margin: 0;
-  mix-blend-mode: darken;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+-webkit-background-clip: text;
+-webkit-text-fill-color: rgba(15, 25, 255, 0) ;
+font-weight: 900;
+margin: 0;
+mix-blend-mode: darken;
 /*   try different modes! */
 }
 
 /*typography styles*/
 h1{
-  color: #7d95ae;
-}
-p{
-  color: rgba(122, 214, 237, 0.746);
-  font-size: 2rem;
+color: #7d95ae;
 }
 
 .pane > div > h1{
-  font-size: 6rem !important;
+font-size: 7rem !important;
 }
 .pane > div > a > h1{
-  font-size: 6rem !important;
-}
-
-.pane > section > p{
-  padding-right: 4rem;
-}
-
-.pane > div{
-  padding-right: 4rem;
+font-size: 7rem !important;
 }
 
 #page {
-    overflow:hidden;
-    /*white-space:nowrap;*/
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background-color:#CCC;
-    display:flex;
-    flex-wrap:no-wrap;
-  }
-  .pane {
-    flex:0 0 100vw;
-    height:100vh;
-    display:flex;
-    position:relative;
-    align-items:center;
-    justify-content:center;
-    background-color: #202e38;
-  }
-  
-  .pane:nth-child(4n+2)  {
-    background-color: #202e38;
-  }
-  .pane:nth-child(4n+3)  {
-    background-color: #202e38;
-  }
-  .pane:nth-child(4n+4)  {
-    background-color: #202e38;
-  }
-  .pane:last-child {
-    background-color: #202e38;
-  }
+  overflow:hidden;
+  /*white-space:nowrap;*/
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:#CCC;
+  display:flex;
+  flex-wrap:no-wrap;
+}
+.pane {
+  flex:0 0 100vw;
+  height:100vh;
+  display:flex;
+  position:relative;
+  align-items:center;
+  justify-content:center;
+  background-color: #202e38;
+}
 
-  footer.py-4{
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
-  }
+.pane:nth-child(4n+2)  {
+  background-color: #202e38;
+}
+.pane:nth-child(4n+3)  {
+  background-color: #F6FCFF;
+}
+.pane:nth-child(4n+4)  {
+  background-color: #DBFFEE;
+}
+.pane:last-child {
+  background-color: #202e38;
+}
 
-  .spacer{
-    position: absolute; 
-    bottom: 2rem;
-  }
+footer.py-4{
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
 
-  .mb-4 > .card-body{
-    display: flex;
-    column-gap: 2rem;
-  }
+.spacer{
+  position: absolute; 
+  bottom: 2rem;
+}
 
-  @media(min-width: 992px){
-    .me-lg-4{
-      margin-right: 5.5rem !important;
-    }
+.mb-4 > .card-body{
+  display: flex;
+  column-gap: 2rem;
+}
+
+@media(min-width: 992px){
+  .me-lg-4{
+    margin-right: 5.5rem !important;
   }
+}
